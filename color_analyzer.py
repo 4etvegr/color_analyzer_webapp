@@ -1,5 +1,5 @@
 from weppy import App,url,request,session, now
-#from weppy_bs3 import BS3
+from weppy_bs3 import BS3
 import os
 from weppy.tools import service
 from weppy.orm import Model, Field, belongs_to, has_many,Database
@@ -10,7 +10,7 @@ from weppy.tools.auth import AuthUser
 
 app = App(__name__)
 
-#app.use_extension(BS3)
+app.use_extension(BS3)
 app.config.auth.single_template = True
 app.config.auth.registration_verification = False
 app.config.auth.hmac_key = "MassiveDynamicRules"
@@ -39,24 +39,21 @@ def not_found():
     #code
     return "Page not found. What are you doing?!"
 
-@app.route("/")
-def hello():
-    return "Hello world!"
-
 @app.route("/post/<int:id>/edit")
 def edit(id):
     # code
     return ("your ID is: {0}".format(id))
 
 @app.route("/time")
-@service.json
-def get_time():
-    return "Current time is: ", request.now_local
+#@service.json
+def time():
+    msg = "Current time is: ", request.now_local
+    return dict(message=msg)
 
 @app.route("/listimages")
 @service.json
 def listimages():
-    path=ur"/Users/4etvegr/Pictures"
+    path="/home/dnemchin/Pictures"
     imagedict = {}
     id = 0
     try:
