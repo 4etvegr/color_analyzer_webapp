@@ -1,0 +1,73 @@
+timestamp: 2017-05-23T20:33:54.557950
+CREATE TABLE "users"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "created_at" TIMESTAMP,
+    "updated_at" TIMESTAMP,
+    "email" CHAR(255) UNIQUE,
+    "password" CHAR(512),
+    "registration_key" CHAR(512),
+    "reset_password_key" CHAR(512),
+    "registration_id" CHAR(512),
+    "first_name" CHAR(128) NOT NULL,
+    "last_name" CHAR(128) NOT NULL
+);
+success!
+timestamp: 2017-05-23T20:33:54.562346
+CREATE TABLE "auth_groups"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "created_at" TIMESTAMP,
+    "updated_at" TIMESTAMP,
+    "role" CHAR(255) UNIQUE,
+    "description" TEXT
+);
+success!
+timestamp: 2017-05-23T20:33:54.565478
+CREATE TABLE "auth_memberships"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "created_at" TIMESTAMP,
+    "updated_at" TIMESTAMP,
+    "user" INTEGER REFERENCES "users" ("id") ON DELETE CASCADE  ,
+    "auth_group" INTEGER REFERENCES "auth_groups" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-05-23T20:33:54.568576
+CREATE TABLE "auth_permissions"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "created_at" TIMESTAMP,
+    "updated_at" TIMESTAMP,
+    "name" CHAR(512) NOT NULL DEFAULT 'default',
+    "table_name" CHAR(512),
+    "record_id" INTEGER,
+    "auth_group" INTEGER REFERENCES "auth_groups" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-05-23T20:33:54.571723
+CREATE TABLE "auth_events"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "created_at" TIMESTAMP,
+    "updated_at" TIMESTAMP,
+    "client_ip" CHAR(512),
+    "origin" CHAR(512) NOT NULL,
+    "description" TEXT NOT NULL,
+    "user" INTEGER REFERENCES "users" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-05-23T20:34:09.944363
+CREATE TABLE "images"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "title" TEXT,
+    "path" TEXT,
+    "comment" TEXT,
+    "date" TIMESTAMP,
+    "user" INTEGER REFERENCES "users" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-05-23T20:35:06.254388
+CREATE TABLE "comments"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "text" TEXT,
+    "date" TIMESTAMP,
+    "user" INTEGER REFERENCES "users" ("id") ON DELETE CASCADE  ,
+    "image" INTEGER REFERENCES "images" ("id") ON DELETE CASCADE  
+);
+success!
